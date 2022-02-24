@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;//sale
 import com.example.demo.caseUse.CreateUser;
 import com.example.demo.caseUse.DeleteUser;
 import com.example.demo.caseUse.GetUser;
+import com.example.demo.caseUse.GetUserPass;
 import com.example.demo.caseUse.UpdateUser;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserPass;
 import com.example.demo.repository.UserRepository;
 
 @RestController
@@ -31,18 +33,27 @@ public class UserRestController {
 	private DeleteUser deleteUser;
 	private UpdateUser updateUser;
 	private UserRepository userRepository;
+	private GetUserPass getUserPass;
 	
-	public UserRestController(GetUser getUser, CreateUser createUser, DeleteUser deleteUser, UpdateUser updateUser, UserRepository userRepository) {
+	public UserRestController(GetUser getUser, CreateUser createUser, DeleteUser deleteUser, UpdateUser updateUser, 
+			UserRepository userRepository, GetUserPass getUserPass) {
 		this.getUser = getUser;
 		this.createUser = createUser;
 		this.deleteUser = deleteUser;
 		this.updateUser = updateUser;
 		this.userRepository = userRepository;
+		this.getUserPass = getUserPass;
 	}
 	
 	@GetMapping ("/")
 	List<User> get(){
 		return getUser.getAll();
+	}
+
+	//Esto es para las contraseñas
+	@GetMapping ("/userPass")
+	List<UserPass> getUserPass(){
+		return getUserPass.getAll();
 	}
 	
 	//create

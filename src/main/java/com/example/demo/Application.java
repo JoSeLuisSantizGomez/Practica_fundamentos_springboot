@@ -11,13 +11,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.demo.bean.MyBean;
 import com.example.demo.bean.MyBeanWithDependency;
 import com.example.demo.bean.MyBeanWithProperties;
 import com.example.demo.component.ComponentDependency;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserPass;
 import com.example.demo.pojo.UserPojo;
+import com.example.demo.repository.UserPassRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
@@ -33,8 +36,11 @@ public class Application implements CommandLineRunner {
 	private UserPojo userPojo;
 	private UserRepository userRepository;
 	private UserService userService;
+	private UserPassRepository userPassRepository;
+	private BCryptPasswordEncoder bcryptpass;
 	
-	public Application(@Qualifier("componentTwoImplement") ComponentDependency componentDependency, MyBean myBean, MyBeanWithDependency myBeanWithDependency, MyBeanWithProperties myBeanWithProperties, UserPojo userPojo, UserRepository userRepository, UserService userService) {
+	public Application(@Qualifier("componentTwoImplement") ComponentDependency componentDependency, MyBean myBean, MyBeanWithDependency myBeanWithDependency, MyBeanWithProperties myBeanWithProperties, UserPojo userPojo, UserRepository userRepository, 
+				UserService userService, UserPassRepository userPassRepository, BCryptPasswordEncoder bcryptpass) {
 		
 		this.componentDependency = componentDependency;
 		this.myBean = myBean;
@@ -43,6 +49,8 @@ public class Application implements CommandLineRunner {
 		this.userPojo = userPojo;
 		this.userRepository = userRepository;
 		this.userService = userService;
+		this.userPassRepository= userPassRepository;
+		this.bcryptpass = bcryptpass;
 	}
 
 	public static void main(String[] args) {
@@ -53,14 +61,16 @@ public class Application implements CommandLineRunner {
 	public void run(String... args) {
 		//ejemplosAnteriores();
 		saveUsersInDataBase();
+		saveUserPass();
 		getInformationJpqlFromUser();
 		saveWithErrorTransactional();
+		
 	}
 	
 	private void saveWithErrorTransactional() {
 		User test1 = new User ("test1", "test1@gmail.com", LocalDate.now());
 		User test2 = new User ("test2", "test2@gmail.com", LocalDate.now());
-		User test3 = new User ("test3", "test1@gmail.com", LocalDate.now());
+		User test3 = new User ("test3", "test3@gmail.com", LocalDate.now());
 		User test4 = new User ("test4", "test4@gmail.com", LocalDate.now());
 		
 		List<User> users = Arrays.asList(test1, test2, test3, test4);
@@ -104,6 +114,7 @@ public class Application implements CommandLineRunner {
 		.stream()
 		.forEach(user -> LOGGER.info("Usuario con findByNameOrEmail " + user)); */
 		
+		/*Estos tambien se comentaron
 		userRepository.findByBirthDateBetween(LocalDate.of(1999, 1, 5), LocalDate.of(1999, 3, 8))
 		.stream()
 		.forEach(user -> LOGGER.info("Usuario con intervalo " + user));
@@ -114,11 +125,21 @@ public class Application implements CommandLineRunner {
 		
 		userRepository.findByNameNotLike("%user%")
 		.stream()
-		.forEach(user -> LOGGER.info("Usuario con no like" + user) );
+		.forEach(user -> LOGGER.info("Usuario con no like" + user) );*/
 		
 		LOGGER.info("El usuario encontrado en el named es" + userRepository
 				.getAllByBirthDateAndEmail( LocalDate.of(1997, 04, 06) , "user3@gmail.com")
 				.orElseThrow(()->new RuntimeException ("No se encontró el usuario en el named")));
+
+		LOGGER.info("El usuario " + userPassRepository.findByUserPassNombre("jose")
+				.orElseThrow(()->new RuntimeException ("no existe")));
+	}
+	
+	private void saveUserPass() {
+		UserPass userPass1 = new UserPass((long) 1,"jose", bcryptpass.encode("123") );
+		UserPass userPass2 = new UserPass((long) 2,"juan",bcryptpass.encode("113") );
+		List<UserPass> list = Arrays.asList(userPass1, userPass2);
+		list.stream().forEach(userPassRepository::save);
 	}
 	
 	private void saveUsersInDataBase() {
