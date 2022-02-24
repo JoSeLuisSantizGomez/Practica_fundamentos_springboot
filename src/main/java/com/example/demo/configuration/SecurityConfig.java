@@ -2,6 +2,7 @@ package com.example.demo.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,11 +34,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http
+    		.formLogin()
+    		.loginPage("/login")
+    		.defaultSuccessUrl("/")
+    		.failureUrl("/login?error=true")
+    		.permitAll()
+    			.and()
 			.authorizeRequests()
+			//.antMatchers(HttpMethod.GET,"/api/users/*").permitAll()
 			.anyRequest()
 			.authenticated()
 			.and()
-			.httpBasic();
+			.httpBasic()
+				.and()
+			.csrf().disable()
+				.logout()
+				.logoutSuccessUrl("/login?logout=true")
+				.invalidateHttpSession(true)
+				.permitAll();
 	}
 
 }
