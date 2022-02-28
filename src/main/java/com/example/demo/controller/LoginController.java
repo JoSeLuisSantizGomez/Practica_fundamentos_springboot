@@ -19,13 +19,13 @@ public class LoginController {
 	}
 
 	@GetMapping("/greeting")
-	public String greeting(Model model) {		
+	public String greeting(Model model) {
 		model.addAttribute("usuario", userPassRepository.findAll());
 		return "inicio";
 	}
 	
 	@GetMapping("/login")
-	public String login() {		
+	public String login() {
 		return "login";
 	}
 

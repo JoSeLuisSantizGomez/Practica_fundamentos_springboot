@@ -136,8 +136,8 @@ public class Application implements CommandLineRunner {
 	}
 	
 	private void saveUserPass() {
-		UserPass userPass1 = new UserPass((long) 1,"jose", bcryptpass.encode("123") );
-		UserPass userPass2 = new UserPass((long) 2,"juan",bcryptpass.encode("113") );
+		UserPass userPass1 = new UserPass((long) 1,"jose", bcryptpass.encode("123"), "joseluis.santizgomez123@gmail.com",null );
+		UserPass userPass2 = new UserPass((long) 2,"jesus",bcryptpass.encode("113"),"jesusito220920@gmail.com",null );
 		List<UserPass> list = Arrays.asList(userPass1, userPass2);
 		list.stream().forEach(userPassRepository::save);
 	}

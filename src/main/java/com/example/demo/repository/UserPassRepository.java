@@ -22,6 +22,11 @@ public interface UserPassRepository extends JpaRepository<UserPass, Long> {
 	@Query("Select up from UserPass up WHERE up.nombre = ?1")
 	Optional<UserPass> findByUserPassNombre(String nombre);
 	
+	@Query("Select up from UserPass up WHERE up.email = ?1")
+	public UserPass findByUserPassEmail(String email);
+	
 	UserPass findByNombre(String nombre);
+	
+	public UserPass findByResetPasswordToken(String token);
 
 }

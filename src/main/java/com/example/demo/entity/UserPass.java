@@ -24,13 +24,21 @@ public class UserPass {
 	@Column(length = 150, unique= true)
 	private String clave;
 	
+	@Column(length = 150)
+	private String email;
+	
+	@Column(length = 45)
+    private String resetPasswordToken;
+	
 	public UserPass() {
 	}
 
-	public UserPass(Long id, String nombre, String clave) {
+	public UserPass(Long id, String nombre, String clave, String email, String resetPasswordToken ) {
 		this.id = id;
 		this.nombre = nombre;
 		this.clave = clave;
+		this.email = email;
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 	public Long getId() {
@@ -56,10 +64,30 @@ public class UserPass {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
+	
+	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
+	}
+	
 
 	@Override
 	public String toString() {
-		return "UserPass [id=" + id + ", nombre=" + nombre + ", clave=" + clave + "]";
+		return "UserPass [id=" + id + ", nombre=" + nombre + ", clave=" + clave + ", email=" + email
+				+ ", resetPasswordToken=" + resetPasswordToken + "]";
 	}
 	
 }
