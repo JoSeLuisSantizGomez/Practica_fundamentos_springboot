@@ -49,8 +49,6 @@ public class ForgotPasswordController {
 			
 			sendEmail(email,resetPasswordLink);
 			model.addAttribute("message", "Se ha enviado un link de recuperación de contraseña a tu correo " + email + ". Favor de verificar");
-			
-		
 		}
 		catch (UserPassNotFoundException ex) {
 			model.addAttribute("error", ex.getMessage());
