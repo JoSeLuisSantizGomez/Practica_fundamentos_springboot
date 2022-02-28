@@ -63,7 +63,7 @@ public class ForgotPasswordController {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		
-		helper.setFrom("contact@shopme.com", "Shopme Support");
+		helper.setFrom("jesusito220920@gmail.com", " Example");
 		helper.setTo(email);
 		
 		String subject = "Éste es el link para recuperar tu contraseña";
